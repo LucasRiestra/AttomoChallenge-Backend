@@ -20,16 +20,17 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const ENV = process.env.NODE_ENV ?? 'development';
+const PORT= 3000;
 
 const CONFIG: Tconfig = {
     development: {
         app: {
-            PORT: process.env.PORT || 4001
+            PORT: process.env.PORT || 3000
         }
     },
     production: {
         app: {
-            PORT: process.env.PORT || 4002
+            PORT: process.env.PORT || 3001
         }
     }
 }
