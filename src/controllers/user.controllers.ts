@@ -21,15 +21,6 @@ export const getUserByEmail = async (req: Request, res: Response) => {
     try {
         const user = await prisma.user.findUnique({
             where: { email: userEmail },
-            include: {
-                movies: {
-                    include: {
-                        genres: {
-                            select: { genre: { select: { name: true, id: true } } },
-                        },
-                    },
-                },
-            },
         });
         res.status(200).json(user);
     } catch (error) {
@@ -37,4 +28,3 @@ export const getUserByEmail = async (req: Request, res: Response) => {
         console.log(error);
     }
 };
-

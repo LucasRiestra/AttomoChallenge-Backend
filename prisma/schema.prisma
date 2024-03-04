@@ -10,10 +10,12 @@ datasource db {
 
 model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  username String   @unique
+  name String   @unique
   password String
+  email    String   @unique
   role     UserRole @default(USER)
   votes    Vote[]
+  games    String[]
 }
 
 model Game {
