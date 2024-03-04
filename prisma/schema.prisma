@@ -33,6 +33,6 @@ model Vote {
   }
 
 enum UserRole {
-  USER  // regular user
-  ADMIN // admin user
+  USER 
+  ADMIN
 }

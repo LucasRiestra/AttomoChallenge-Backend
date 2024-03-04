@@ -1,38 +1,40 @@
 import dotenv from 'dotenv';
+import Configuration from '../interfaces/config.interfaces';
+dotenv.config();
 
-type Tconfig = {
-    [key: string]: EnvironmentConfig;
-}
+const ENV = process.env.NODE_ENV || 'development';
 
-type EnvironmentConfig = {
-    app: AppConfig;
-}
-
-type AppConfig = {
-    PORT: string | number;
-    //MONGO_DB_URI: string;
-}
-
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({path: '.env.production'});
-}else{
-  dotenv.config({path: '.env.development'});
-}
-
-const ENV = process.env.NODE_ENV ?? 'development';
-const PORT= 3000;
-
-const CONFIG: Tconfig = {
+const CONFIG: Configuration = {
     development: {
         app: {
-            PORT: process.env.PORT || 3000
+            PORT: process.env.PORT || 4001
+        },
+        auth0: {
+            client_origin: process.env.APP_ORIGIN,
+            audience: process.env.AUTH0_AUDIENCE,
+            issuer: process.env.AUTH0_ISSUER
+        },
+        cloudinary : {
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
         }
     },
     production: {
         app: {
-            PORT: process.env.PORT || 3001
+            PORT: process.env.PORT || 4002
+        },
+        auth0: {
+            client_origin: process.env.APP_ORIGIN,
+            audience: process.env.AUTH0_AUDIENCE,
+            issuer: process.env.AUTH0_ISSUER
+        },
+        cloudinary : {
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
         }
     }
 }
 
-export default CONFIG[ENV];
+export default CONFIG[ENV]
