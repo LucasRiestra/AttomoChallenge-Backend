@@ -3,9 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import FileUpload from 'express-fileupload';
-
 import userRoutes from './routes/user.routes';
 import gameRoutes from './routes/games.routes'; 
+import { auth } from 'express-openid-connect';
 
 
 const app = express();
@@ -35,15 +35,11 @@ app.use(FileUpload({
 
 app.use(auth(config));
 
-app.use('/users', userRoutes); 
-app.use('/games', gameRoutes);
+app.use('/', userRoutes); 
+app.use('/', gameRoutes);
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "This is working bro!" });
 });
 
 export default app;
-
-function auth(config: { authRequired: boolean; auth0Logout: boolean; secret: string; baseURL: string; clientID: string; issuerBaseURL: string; }): any {
-    throw new Error('Function not implemented.');
-}

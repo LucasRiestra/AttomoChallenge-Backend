@@ -13,7 +13,7 @@ model User {
   name String   @unique
   password String
   email    String   @unique
-  role     UserRole @default(USER)
+  role     UserRole @default(ADMIN)
   votes    Vote[]
   games    String[]
 }
@@ -22,7 +22,7 @@ model Game {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @unique
   category  String
-  imageUrl  String
+  image  String
   votes     Vote[]
 }
 

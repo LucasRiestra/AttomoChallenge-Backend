@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { createGame, updateGame, deleteGame, getGameById, voteGame, unvoteGame } from '../controllers/game.controllers';
+import { createGame, updateGame, deleteGame, getGameById, voteGame, unvoteGame, getAllGames } from '../controllers/game.controllers';
 
 const router = Router();
 
+
+router.get('/games', getAllGames);
 router.post('/games', createGame);
 router.put('/games/:id', updateGame);
 router.delete('/games/:id', deleteGame);
