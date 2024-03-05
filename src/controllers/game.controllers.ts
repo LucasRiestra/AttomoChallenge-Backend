@@ -7,13 +7,15 @@ export const getAllGames = async (req: Request, res: Response) => {
         const allGames = await prisma.game.findMany({
             include: {
                 votes: {
-                    select: { user: { select: { name: true, id: true } } } 
+                    select: { user: { select: { name: true, id: true } } },
                 },
             },
         });
         res.status(200).json(allGames);
     } catch (error) {
-        res.status(500).json(error);
+        const err = error as Error;
+        console.error(error); // log the error to the console
+        res.status(500).json({ message: 'Internal server error', error: err.message });
     }
 };
 
@@ -34,10 +36,36 @@ export const createGame = async (req: Request, res: Response) => {
         const result = await uploadImage(image);
         
         const game = await prisma.game.create({
-            data: { name, category, image: result.url }
+            data: { 
+                name, 
+                category, 
+                image: result.url,
+                creator: {
+                    connect: { id: userId }
+                }
+            }
         });
     
         res.status(201).json(game);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+};
+
+export const getGamesByUser = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+
+    try {
+        const userGames = await prisma.user.findUnique({
+            where: { id: userId },
+            include: { games: true },
+        });
+
+        if (!userGames) {
+            return res.status(404).send('User not found.');
+        }
+
+        res.status(200).json(userGames.games);
     } catch (error) {
         res.status(500).json(error);
     }
@@ -62,10 +90,16 @@ export const getGameById = async (req: Request, res: Response) => {
 };
 
 export const updateGame = async (req: Request, res: Response) => {
-    const { gameId } = req.params;
+    const { gameId, userId } = req.params;
     const { name, category, image } = req.body;
 
     try {
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).send('Only admins can update games.');
+        }
+
         const updatedGame = await prisma.game.update({
             where: { id: gameId },
             data: { name, category, image }
@@ -78,9 +112,15 @@ export const updateGame = async (req: Request, res: Response) => {
 };
 
 export const deleteGame = async (req: Request, res: Response) => {
-    const { gameId } = req.params;
+    const { gameId, userId } = req.params;
 
     try {
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).send('Only admins can delete games.');
+        }
+
         const deletedGame = await prisma.game.delete({
             where: { id: gameId }
         });

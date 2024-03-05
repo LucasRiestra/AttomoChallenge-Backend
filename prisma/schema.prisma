@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,20 +9,22 @@ datasource db {
 
 model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name String   @unique
+  name     String   @unique
   password String
   email    String   @unique
   role     UserRole @default(ADMIN)
   votes    Vote[]
-  games    String[]
+  games    Game[]   @relation("userGames")
 }
 
 model Game {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @unique
   category  String
-  image  String
+  image     String
   votes     Vote[]
+  creator   User?    @relation("userGames", fields: [creatorId], references: [id])
+  creatorId String?  @db.ObjectId
 }
 
 model Vote {
