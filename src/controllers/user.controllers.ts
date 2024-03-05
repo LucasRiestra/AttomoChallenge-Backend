@@ -16,11 +16,11 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const getUserByEmail = async (req: Request, res: Response) => {
-    const { userEmail } = req.params;
+    const { email } = req.params;
 
     try {
         const user = await prisma.user.findUnique({
-            where: { email: userEmail },
+            where: { email: email },
         });
         res.status(200).json(user);
     } catch (error) {
