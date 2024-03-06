@@ -90,14 +90,18 @@ export const getGameById = async (req: Request, res: Response) => {
 };
 
 export const updateGame = async (req: Request, res: Response) => {
-    const { gameId, userId } = req.params;
+    const gameId = req.params.id;
     const { name, category, image } = req.body;
 
-    try {
-        const user = await prisma.user.findUnique({ where: { id: userId } });
+    console.log(gameId);  
 
-        if (!user || user.role !== 'ADMIN') {
-            return res.status(403).send('Only admins can update games.');
+    try {
+        const game = await prisma.game.findUnique({
+            where: { id: gameId }
+        });
+
+        if (!game) {
+            return res.status(404).send('Game not found.');
         }
 
         const updatedGame = await prisma.game.update({
@@ -112,14 +116,14 @@ export const updateGame = async (req: Request, res: Response) => {
 };
 
 export const deleteGame = async (req: Request, res: Response) => {
-    const { gameId, userId } = req.params;
+    const gameId = req.params.id;
+
+    console.log(gameId);  
 
     try {
-        const user = await prisma.user.findUnique({ where: { id: userId } });
-
-        if (!user || user.role !== 'ADMIN') {
-            return res.status(403).send('Only admins can delete games.');
-        }
+        await prisma.vote.deleteMany({
+            where: { gameId: gameId }
+        });
 
         const deletedGame = await prisma.game.delete({
             where: { id: gameId }
