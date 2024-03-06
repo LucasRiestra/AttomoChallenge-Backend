@@ -14,7 +14,7 @@ export const getAllGames = async (req: Request, res: Response) => {
         res.status(200).json(allGames);
     } catch (error) {
         const err = error as Error;
-        console.error(error); // log the error to the console
+        console.error(error); 
         res.status(500).json({ message: 'Internal server error', error: err.message });
     }
 };
@@ -156,11 +156,23 @@ export const voteGame = async (req: Request, res: Response) => {
 };
 
 export const unvoteGame = async (req: Request, res: Response) => {
-    const { voteId } = req.params;
+    const { userId } = req.body;
+    const { id: gameId } = req.params;
 
     try {
+        const vote = await prisma.vote.findFirst({
+            where: { 
+                userId: userId,
+                gameId: gameId
+            }
+        });
+
+        if (!vote) {
+            return res.status(404).send('Vote not found.');
+        }
+
         const unvote = await prisma.vote.delete({
-            where: { id: voteId }
+            where: { id: vote.id }
         });
 
         res.status(200).json(unvote);
