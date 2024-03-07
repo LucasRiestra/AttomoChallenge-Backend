@@ -5,6 +5,7 @@ This project is a backend API developed with Express and Prisma. The API manages
 
 The project serves as the backend for the voting web application designed for Vegetta777's community to choose the most anticipated video game of 2023. Users can register, log in, and vote for their favorite games. The backend is responsible for managing the database, user authentication, and game-related functionalities.
 
+
 ## Project Organization
 The project is thoughtfully structured, ensuring clear organization and separation of concerns. The main directories within the src folder are described as follows:
 
