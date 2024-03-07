@@ -79,6 +79,11 @@ votes: Manages the relationship between users and the games they voted for.
 ## Cloudinary Configuration
 The config directory contains configuration files, including Cloudinary configuration. Cloudinary is utilized to securely store and manage images uploaded within the application. The configuration ensures that the images are securely stored in Cloudinary, and the application generates secure URLs for accessing these images.
 
+## Deployment
+The Attomo Challenge Backend has been successfully deployed and is accessible at the following link:
+
+[Attomo Challenge Backend Deployment](https://attomochallenge-backend-production.up.railway.app/)
+
 ## Contributions
 Contributions are welcome. If you find any issues or have any suggestions, feel free to open an issue or submit a pull request.
 
