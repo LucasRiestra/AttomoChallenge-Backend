@@ -34,6 +34,7 @@ git clone https://github.com/LucasRiestra/AttomoChallenge-Backend.git
 
 cd AttomoChallenge-Backend
 npm install
+npx prisma generate
 
 3. Set Up Environment Variables. Create a .env file with the following variables:
 
